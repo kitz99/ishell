@@ -48,6 +48,9 @@ type Actions interface {
 	// Checklist is similar to MultiChoice but user can choose multiple variants using Space.
 	// init is initially selected options.
 	Checklist(options []string, text string, init []int) []int
+	// SimpleChecklist is similar to Checklist but user can choose single variant using Enter.
+	// init is initially selected options.
+	SimpleChecklist(options []string, text string, init []int) []int
 	// SetPrompt sets the prompt string. The string to be displayed before the cursor.
 	SetPrompt(prompt string)
 	// SetMultiPrompt sets the prompt string used for multiple lines. The string to be displayed before
@@ -140,6 +143,11 @@ func (s *shellActionsImpl) MultiChoice(options []string, text string) int {
 func (s *shellActionsImpl) Checklist(options []string, text string, init []int) []int {
 	return s.multiChoice(options, text, init, true)
 }
+
+func (s *shellActionsImpl) SimpleChecklist(options []string, text string, init []int) []int {
+	return s.multiChoice(options, text, init, false)
+}
+
 func (s *shellActionsImpl) SetPrompt(prompt string) {
 	s.reader.prompt = prompt
 	s.reader.scanner.SetPrompt(s.reader.rlPrompt())
